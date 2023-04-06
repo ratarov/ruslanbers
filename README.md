@@ -28,9 +28,9 @@
 - Система тегов для навигации по постам в виде разноцветных кнопок
 - Немного красоты: кнопки действий вместо ссылок, картинки к кнопкам, посты в виде карточек, оптимизация для различных устройств
 
-![image](https://github.com/ratarov/ruslanbers_social_network/raw/master/yatube/static/img/1.png)
-![image](https://github.com/ratarov/ruslanbers_social_network/raw/master/yatube/static/img/2.png)
-![image](https://github.com/ratarov/ruslanbers_social_network/raw/master/yatube/static/img/3.png)
+![image](https://github.com/ratarov/ruslanbers/raw/master/yatube/static/img/1.png)
+![image](https://github.com/ratarov/ruslanbers/raw/master/yatube/static/img/2.png)
+![image](https://github.com/ratarov/ruslanbers/raw/master/yatube/static/img/3.png)
 
 ### Установка
 **Как запустить проект:**
