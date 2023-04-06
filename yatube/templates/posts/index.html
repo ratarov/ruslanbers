@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Главная страница Yatube!{% endblock %}
+{% block content %}
+{% include 'posts/includes/switcher.html' %}
+  <div class="row border-start border-end border-bottom {% if not user.is_authenticated %} border-top {% endif %} rounded mb-4 shadow-sm">
+    <div class="col p-4 d-flex flex-column">
+      <h1 class="display-5 fw-bold text-center">
+        {% if tag %}
+          Посты под тегом "{{ tag.name }}"</h2>
+        {% else %}
+          Посты наших авторов
+        {% endif %}
+      </h1>
+    </div>
+  </div>
+  {% for post in page_obj %}
+    {% include "posts/includes/post_card.html" with author_link=True group_link=True %}
+  {% endfor %}
+  {% include "posts/includes/paginator.html" %}
+{% endblock %}

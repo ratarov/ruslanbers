@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Посты по подписке{% endblock %}
+{% block content %}
+  {% include 'posts/includes/switcher.html' with page_header="Посты избранных авторов" %}
+  {% for post in page_obj %}
+    {% include "posts/includes/post_card.html" with author_link=True group_link=True %}
+  {% empty %}
+    <p>Посты выбранных авторов не найдены</p>
+  {% endfor %}
+  {% include "posts/includes/paginator.html" %}
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Личный кабинет {{request.user.get_full_name}}{% endblock %}
+{% block content %}
+  {% load user_filters %}
+  {% load thumbnail %}
+  {% load static %}
+  <div class="row justify-content-center">
+    <h1 class="display-5 fw-bold text-center">
+        Ваш Личный кабинет 
+    </h1>
+    <div class="col-auto">
+      {% if user.profile.photo %}
+        {% thumbnail user.profile.photo "100x100" crop="center" as photo %}
+          <img class="img-fluid rounded mx-auto" src="{{ photo.url }}">
+        {% endthumbnail %}
+      {% else %}
+        <img src="{% static 'img/avatar.jpg' %}" width="100" height="100" class="d-inline-block" alt="">
+      {% endif %}
+    </div>
+    <div class="col-auto">
+      <h1>
+        Пользователь <i>{{ request.user.username }}</i>
+      </h1>
+    </div>
+    <div class="col-md-8 p-5">
+        {% if user_form.errors %}
+            {% for field in user_form %}
+              {% for error in field.errors %}
+                <div class="alert alert-danger">
+                  {{ error|escape }}
+                </div>
+              {% endfor %}
+            {% endfor %}
+            {% for error in user_form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ error|escape }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% if profile_form.errors %}
+            {% for field in profile_form %}
+            {% for error in field.errors %}
+              <div class="alert alert-danger">
+                {{ error|escape }}
+              </div>
+            {% endfor %}
+            {% endfor %}
+            {% for error in profile_form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ error|escape }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in user_form %} 
+        <div class="form-group row my-3">
+          <label for="{{ field.id_for_label }}">
+          {{ field.label }}
+            {% if field.field.required %}
+            <span class="required text-danger">*</span>
+            {% endif %}
+          </label>
+          {{ field|addclass:'form-control' }} 
+          {% if field.help_text %}
+            <small id="{{ field.id_for_label }}-help" class="form-text text-muted">
+            {{ field.help_text|safe }}
+            </small>
+          {% endif %}
+        </div>
+        {% endfor %}
+        {% for field in profile_form %} 
+        <div class="form-group row my-3">
+          <label for="{{ field.id_for_label }}">
+          {{ field.label }}
+            {% if field.field.required %}
+            <span class="required text-danger">*</span>
+            {% endif %}
+          </label>
+          {{ field|addclass:'form-control' }} 
+          {% if field.help_text %}
+            <small id="{{ field.id_for_label }}-help" class="form-text text-muted">
+            {{ field.help_text|safe }}
+            </small>
+          {% endif %}
+        </div>
+        {% endfor %}
+        <div class="col-md-6 offset-md-4">
+        <button type="submit" class="btn btn-primary">
+            Сохранить изменения
+        </button>
+        </div>
+      </form>
+    </div> <!-- col -->
+  </div> <!-- row -->
+{% endblock %}

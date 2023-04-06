@@ -1,0 +1,73 @@
+{% load thumbnail %}
+{% load static %}
+<div class="row border rounded mb-4 shadow-sm">
+  <div class="col p-4 flex-column">
+    <div class="row">
+      <div class="col-auto">
+        {% if post.author.profile.photo %}
+          {% thumbnail post.author.profile.photo "60x60" crop="center" as photo %}
+          <img class="img-fluid rounded mx-auto" src="{{ photo.url }}">
+          {% endthumbnail %}
+        {% else %}
+          <img src="{% static 'img/avatar.jpg' %}" width="60" height="60" class="d-inline-block" alt="">
+        {% endif %}
+      </div>
+      <div class="col-auto col-md-6">
+        Автор: 
+        <a href="{% url 'posts:profile' post.author.username %}"> 
+          {% if post.author.get_full_name %} 
+            {{ post.author.get_full_name }} 
+          {% else %} 
+            {{ post.author.username }}
+          {% endif %}
+        </a><br>
+        <small>Дата публикации: {{ post.pub_date|date:"j M Y" }}</small><br>
+        {% if post.group and group_link %} 
+          <small>
+            Группа: 
+            <a href="{% url 'posts:group_list' post.group.slug %}" title="все записи группы">
+              {{ post.group.title }}
+            </a>
+          </small>
+        {% endif %}
+      </div>
+    </div>
+
+    {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+      <img class="card-img my-2" src="{{ im.url }}">
+    {% endthumbnail %}
+    <p>{{ post.text|linebreaksbr|truncatechars:200 }}</p>
+    <p> 
+      {% if post.tags.exists %} 
+        Теги:
+        {% for tag in post.tags.all %}
+          <a class="btn btn-{{ tags_colors|random }} btn-sm" href="{% url "posts:index_by_tag" tag.slug %}">
+              {{ tag.name }}
+          </a>
+        {% endfor %}
+      {% endif %}
+    </p>
+    <div class="row">
+      <div class="col">
+        <a class="btn btn-primary btn-sm" href="{% url 'posts:post_detail' post.id %}#like" title="Нравится">
+          <svg class="i-heart" viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            <path d="M4 16 C1 12 2 6 7 4 12 2 15 6 16 8 17 6 21 2 26 4 31 6 31 12 28 16 25 20 16 28 16 28 16 28 7 20 4 16 Z" />
+          </svg> {{ post.liked.count }}
+        </a>
+        <a class="btn btn-primary btn-sm" href="{% url 'posts:post_detail' post.id %}#readcomment" title="Читать комментарии">
+          <svg class="i-msg" viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
+          </svg> {{ post.comments.count }}
+        </a>
+      </div>
+      <div class="col-auto">
+        <a class="btn btn-primary btn-sm" href="{% url 'posts:post_detail' post.id %}" title="подробная информация">
+          <svg class="i-info" viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            <path d="M16 14 L16 23 M16 8 L16 10" />
+            <circle cx="16" cy="16" r="14" />
+          </svg> подробности
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

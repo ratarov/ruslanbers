@@ -1,0 +1,44 @@
+{% load user_filters %}
+<h4> Комментарии посетителей: </h4>
+{% for comment in comments %}
+  <div class="media mb-4">
+    <div class="media-body">
+      <h6 class="mt-0">
+        <a href="{% url 'posts:profile' comment.author.username %}">
+          {{ comment.author.get_full_name }}
+        </a>
+        <small> - {{ comment.created|date:"j M Y H:i:s" }}:
+          {% if request.user.username == comment.author.username %}
+            <a class="btn btn-primary btn-sm" href="{% url 'posts:del_comment' comment.id %}" title="Удалить комментарий">
+              <svg class="i-trash" viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                <path d="M28 6 L6 6 8 30 24 30 26 6 4 6 M16 12 L16 24 M21 12 L20 24 M11 12 L12 24 M12 6 L13 2 19 2 20 6" />
+              </svg>
+            </a>
+          {% endif %}
+          </small>
+      </h6> 
+      <p>
+        {{ comment.text|linebreaksbr }}
+      </p>      
+    </div>
+  </div>
+{% empty %}
+  Пока нет комментариев
+{% endfor %} 
+
+{% if user.is_authenticated %}
+  <div class="card my-4">
+    <h5 class="card-header">
+      Добавить комментарий:
+    </h5>
+    <div class="card-body">
+      <form method="post" action="{% url 'posts:add_comment' post.id %}">
+        {% csrf_token %}      
+        <div class="form-group mb-2">
+          {{ form.text|addclass:"form-control" }}
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+      </form>
+    </div>
+  </div>
+{% endif %}

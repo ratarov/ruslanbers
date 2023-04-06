@@ -1,0 +1,48 @@
+{% with request.resolver_match.view_name as view_name %}
+  {% if user.is_authenticated %}
+    <div class="row">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a 
+            class="nav-link {% if view_name == 'posts:index' %}active{% endif %}"
+            href="{% url 'posts:index' %}"
+          >
+            Все посты
+          </a>
+        </li>
+        <li class="nav-item">
+          <a 
+            class="nav-link {% if view_name == 'posts:follow_index' %}active{% endif %}"
+            href="{% url 'posts:follow_index' %}"
+          >
+            Подписки
+          </a>
+        </li>
+        <li class="nav-item">
+          <a 
+            class="nav-link {% if view_name == 'posts:authors_list' %} active {% endif %}"
+            href="{% url 'posts:authors_list' %}"
+          >
+            Авторы
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if view_name == 'posts:groups' %} active {% endif %}"
+             href="{% url 'posts:groups' %}"
+          >
+            Группы
+          </a>
+        </li>
+      </ul>
+    </div>
+  {% endif %}
+  {% if page_header %}
+    <div class="row border-start border-end border-bottom rounded mb-4 shadow-sm">
+      <div class="col p-4 d-flex flex-column">
+        <h1 class="display-5 fw-bold text-center">
+          {{ page_header }}
+        </h1>
+      </div>
+    </div>
+  {% endif %}
+{% endwith %}

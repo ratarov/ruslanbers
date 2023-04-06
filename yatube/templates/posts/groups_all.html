@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Сообщества{% endblock %}
+{% block content %}
+  {% include 'posts/includes/switcher.html' with page_header="Сообщества" %}
+  <div class="row border rounded mb-4 shadow-sm">
+    <div class="col p-4 d-flex flex-column">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Группа</th>
+            <th scope="col">Описание</th>
+            <th scope="col">Кол-во постов</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for group in page_obj %}
+            <tr>
+              <td>
+                <a href="{% url 'posts:group_list' group.slug %}" title="все записи группы">
+                  {{ group.title }}
+                </a>
+              </td>
+              <td>{{ group.description|truncatechars:60 }}</td>
+              <td>{{ group.posts.count }}</td>
+            </tr>
+          {% empty %}
+            <p>Пока на сайте нет сообществ. Создайте первое!</p>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

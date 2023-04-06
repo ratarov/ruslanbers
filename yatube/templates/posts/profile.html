@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}Профайл пользователя {{ author.username }}{% endblock %}
+{% block content %}
+{% load thumbnail %}
+{% load static %}
+<div class="row border rounded mb-4 shadow-sm">
+  <div class="col p-4 d-flex flex-column">
+    <div class="row">
+      <div class="col-auto">
+        {% if author.profile.photo %}
+          {% thumbnail author.profile.photo "200x200" crop="center" as photo %}
+            <img class="img-fluid rounded mx-auto" src="{{ photo.url }}">
+          {% endthumbnail %}
+        {% else %}
+          <img src="{% static 'img/avatar.jpg' %}" width="200" height="200" class="d-inline-block" alt="">
+        {% endif %}
+      </div>
+      <div class="col-auto col-md-6">
+        <div class="row">
+          <div class="col-3">
+            Автор:
+          </div>
+          <div class="col-auto">
+            {% if author.get_full_name %} 
+              {{ author.get_full_name }} |
+            {% endif %} 
+            {{ author.username }}
+          </div>
+        </div>
+        {% if author.profile.bio %}
+        <div class="row">
+          <div class="col-3">Об авторе:</div>
+          <div class="col md-auto">{{ author.profile.bio|linebreaksbr }}</div>
+        </div>
+        {% endif %}
+        {% if author.profile.location %}
+        <div class="row">
+          <div class="col-3">Город:</div>
+          <div class="col md-auto">{{ author.profile.location }}</div>
+        </div>
+        {% endif %}
+        {% if author.profile.birth_date %}
+        <div class="row">
+          <div class="col-3">День рождения:</div>
+          <div class="col md-auto">{{ author.profile.birth_date|date:"j M" }}</div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+    {% if author != request.user %}
+      {% if following %}
+        <a
+          class="btn btn-lg btn-danger"
+          href="{% url 'posts:profile_unfollow' author.username %}" role="button"
+        >
+          Отписаться
+        </a>
+      {% else %}
+          <a
+            class="btn btn-lg btn-primary"
+            href="{% url 'posts:profile_follow' author.username %}" role="button"
+          >
+            Подписаться
+          </a>
+      {% endif %} 
+    {% endif %}   
+
+
+    <h1 class="fw-bold">Все посты автора ({{ author.posts.count }})</h1>
+    
+    
+
+    
+    
+    
+  
+  {% for post in page_obj %}
+    {% include 'posts/includes/post_card.html' with group_link=True %}
+  {% empty %}
+    <p>Пользователь не опубликовал ни одного поста</p>
+  {% endfor %}
+  {% include 'posts/includes/paginator.html' %}
+{% endblock %}

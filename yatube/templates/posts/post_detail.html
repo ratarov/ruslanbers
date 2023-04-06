@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% load static %}
+{% block title %}Пост {{ post.text|truncatechars:30 }}{% endblock %}
+  {% block content %}
+      <div class="row border rounded mb-4 shadow-sm">
+        <div class="col p-4 d-flex flex-column">  
+          <div class="row">
+            <aside class="col-12 col-md-3">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  {% if post.author.profile.photo %}
+                    {% thumbnail post.author.profile.photo "100x100" crop="center" as photo %}
+                      <img class="img-fluid rounded mx-auto" src="{{ photo.url }}">
+                    {% endthumbnail %}
+                  {% else %}
+                    <img src="{% static 'img/avatar.jpg' %}" width="200" height="200" class="d-inline-block" alt="">
+                  {% endif %} <br>
+                  Автор:
+                  <a href="{% url 'posts:profile' post.author.username %}">
+                    {% if post.author.get_full_name %} 
+                      {{ post.author.get_full_name }} 
+                    {% else %} 
+                      {{ post.author.username }}
+                    {% endif %}
+                  </a>
+                </li>
+                <li class="list-group-item">Дата публикации: {{ post.pub_date|date:"j M Y" }}</li>
+                {% if post.group %}
+                  <li class="list-group-item">
+                    Группа: <a href="{% url 'posts:group_list' post.group.slug %}">{{ post.group.title }}</a>
+                  </li>
+                {% endif %}
+                
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Всего постов автора: <span >{{ post.author.posts.count }}</span>
+                </li>
+              </ul>
+            </aside>
+            <article class="col-12 col-md-9 py-5">
+              {% thumbnail post.image "960x339" upscale=True as im %}
+                <img class="card-img my-2" src="{{ im.url }}">
+              {% endthumbnail %}
+              <p class-"lead">{{ post.text|linebreaksbr }}</p>
+              <p> 
+                {% if post.tags.exists %} 
+                  Теги: 
+                  {% for tag in post.tags.all %}
+                    <a class="btn btn-{{ tags_colors|random }} btn-sm" href="{% url "posts:index_by_tag" tag.slug %}">
+                        {{ tag.name }}
+                    </a>
+                  {% endfor %}
+                {% endif %}
+              </p>
+              <hr>
+              <div class="row">
+                <div class="col gap-2 d-md-flex">
+                  <a name="like"></a>
+                  <a 
+                    {% if post.author == request.user %} class="btn btn-primary btn-sm disabled" 
+                    {% else %} class="btn btn-primary btn-sm" 
+                    {% endif %} 
+                    {% if not liked %} href="{% url 'posts:post_like' post.id %}" 
+                    {% else %} href="{% url 'posts:post_unlike' post.id %}"
+                    {% endif %} 
+                    title="Нравится"
+                  >
+                    <svg class="i-heart" viewBox="0 0 32 32" width="24" height="24" 
+                      {% if not liked %} fill="none"
+                      {% else %} fill="red"
+                      {% endif %} 
+                      stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    >
+                      <path d="M4 16 C1 12 2 6 7 4 12 2 15 6 16 8 17 6 21 2 26 4 31 6 31 12 28 16 25 20 16 28 16 28 16 28 7 20 4 16 Z" />
+                    </svg> {{ post.liked.count }}
+                  </a>
+                  <a class="btn btn-primary btn-sm" href="#addcomment" title="Добавить комментарий">
+                    <svg class="i-msg" viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                      <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
+                    </svg> {{ post.comments.count }}
+                  </a>
+                </div>
+                <div class="col-auto">
+                  {% if post.author == request.user %}
+                    <a class="btn btn-primary btn-sm" href="{% url 'posts:post_edit' post.id %}" title="Изменить запись">
+                      <svg class="i-edit" viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
+                      </svg> Редактировать
+                    </a>
+                  
+                    <a class="btn btn-primary btn-sm" href="{% url 'posts:post_delete' post.id %}" title="Удалить запись">
+                      <svg class="i-trash" viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <path d="M28 6 L6 6 8 30 24 30 26 6 4 6 M16 12 L16 24 M21 12 L20 24 M11 12 L12 24 M12 6 L13 2 19 2 20 6" />
+                      </svg> Удалить
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
+              <hr>
+              <p>
+                <a name="readcomment"></a>
+                {% include "posts/includes/post_comment.html" %}
+                <a name="addcomment"></a>
+              </p>
+            </article>
+          </div>
+        </div>
+      </div>
+  {% endblock %}

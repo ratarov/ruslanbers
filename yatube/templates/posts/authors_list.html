@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Авторы{% endblock %}
+{% block content %}
+  {% load static %}
+  {% include 'posts/includes/switcher.html' with page_header="Наши авторы" %}
+  <div class="row border rounded mb-4 shadow-sm">
+    <div class="col p-4 d-flex flex-column">
+      <h3 class="text-center">Король постов  
+        <img src="{% static 'img/crown.png' %}" width="30" class="d-inline-block align-top" alt="">
+        <a href="{% url 'posts:profile' posts_king.username %}" title="страница автора">
+          {{ posts_king.username }}
+        </a>
+        <img src="{% static 'img/crown.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+      </h3>
+      <h3 class="text-center">
+        Повелитель комментов 
+        <img src="{% static 'img/cup.jpg' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+        <a href="{% url 'posts:profile' comments_king.username %}" title="страница автора">
+            {{ comments_king.username }}
+        </a>
+        <img src="{% static 'img/cup.jpg' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+      </h3>
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Автор</th>
+          <th scope="col">Полное имя</th>
+          <th scope="col">Кол-во постов</th>
+          <th scope="col">Кол-во комментариев</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for author in page_obj %}
+          <tr>
+          <td>
+            <a href="{% url 'posts:profile' author.username %}" title="страница автора">
+              {{ author.username }}
+            </a>
+          </td>
+          <td>{{ author.get_full_name }}</td>
+          <td>{{ author.posts_qty }}</td>
+          <td>{{ author.comments.count }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>  
+  {% include "posts/includes/paginator.html" %}
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}О проекте{% endblock %}
+{% block content %}
+  {% load static %}
+  <div class="row border rounded mb-4 shadow-sm">
+    <div class="col p-4 d-flex flex-column">
+      <h1 class="display-5 fw-bold text-center">Что это за проект?</h1><br>
+      <div class="row">
+        <div class="col-auto col-md-2 nav flex-column nav-pills me-3" role="tablist" aria-orientation="vertical">
+          <button class="nav-link active" id="v-pills-project-tab" data-bs-toggle="pill" data-bs-target="#v-pills-project" 
+            type="button" role="tab" aria-controls="v-pills-project" aria-selected="true">
+              О проекте
+          </button>
+          <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-tools" 
+            type="button" role="tab" aria-controls="v-pills-tools" aria-selected="false">
+              Инструменты
+          </button>
+          <button class="nav-link" data-bs-toggle="pill" data-bs-target="#v-pills-features" 
+            type="button" role="tab" aria-controls="v-pills-features" aria-selected="false">
+              Возможности
+          </button>
+          <button class="nav-link" id="v-pills-author-tab" data-bs-toggle="pill" data-bs-target="#v-pills-author" 
+            type="button" role="tab" aria-controls="v-pills-author" aria-selected="false">
+              Об авторе
+        </button>
+      </div>
+        <div class="col-12 col-md-9 tab-content" id="v-pills-tabContent">
+          <div class="tab-pane fade show active" id="v-pills-project" role="tabpanel" aria-labelledby="v-pills-project-tab">
+            <p>
+              <h4>Сайт был создан в рамках обучения на курсе Яндекс-Практикум: Бэкенд-разработчик на Python</h4>
+            </p>
+            <p>
+              <h6>Основные цели:</h6>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Разобраться в работе IDE Visual Studio Code</li>
+                <li class="list-group-item">Улучшить понимание принципов ООП</li>
+                <li class="list-group-item">Познакомиться с возможностями фреймворка Django</li>
+                <li class="list-group-item">Получить представления о фронтенд: HTML и CSS</li>
+                <li class="list-group-item">Сделать первый проект для своего портфолио</li>
+                <li class="list-group-item">Сдать все вовремя и не вылететь с курса</li>
+              </ul>
+            </p>
+          </div>
+          <div class="tab-pane fade" id="v-pills-tools" role="tabpanel" aria-labelledby="v-pills-tools-tab">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"> 
+                <img src="{% static 'img/fav/Python.jpg' %}" width="30"> Python 3.7
+              </li>
+              <li class="list-group-item">
+                <img src="{% static 'img/fav/dj.png' %}" width="30"> Django 2.2.16
+              </li>
+              <li class="list-group-item">
+                <img src="{% static 'img/fav/vscode.jpg' %}" width="30"> VS Code
+              </li>
+              <li class="list-group-item">
+                <img src="{% static 'img/fav/bootstrap-logo.svg' %}" width="30"> Bootstrap
+              </li>
+              <li class="list-group-item">
+                <img src="{% static 'img/fav/god.jpg' %}" width="30"> Божья помощь
+              </li>
+            </ul>
+          </div>
+          <div class="tab-pane fade" id="v-pills-features" role="tabpanel" aria-labelledby="v-pills-features-tab">
+            <h2>Заложенные возможности по ТЗ заказчика:</h2>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Страницы: главная, страница сообщества, профайл автора с постами, карточка поста</li>
+              <li class="list-group-item">Создание и редактирование постов</li>
+              <li class="list-group-item">Создание комментариев к посту</li>
+              <li class="list-group-item">Работа с сообществами (создание через админ-панель и его опциональный выбор в посте)</li>
+              <li class="list-group-item">Возможность подписок на авторов (лента подписки с переключателем на главную страницу)</li>
+              <li class="list-group-item">Возможность добавления картинок к постам</li>
+              <li class="list-group-item">Настроенная админ-панель</li>
+              <li class="list-group-item">Работа с пользователями: регистрация новых, вход/выход, смена пароля и восстановление пароля (эмулятор)</li>
+            </ul>
+            <h2>Реализовано помимо пожеланий заказчика из ЯП:</h2>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Страницы: навигация по группам и авторам с авторами-лидерами по постам и комментариям</li>
+              <li class="list-group-item">Личный кабинет с полями за рамками стандартной модели (аватары, доп.инфо об авторе)</li>
+              <li class="list-group-item">Пользовательские и стандартные аватары</li>
+              <li class="list-group-item">Удаление постов</li>
+              <li class="list-group-item">Удаление комментариев</li>
+              <li class="list-group-item">Система лайков понравившимся постам</li>
+              <li class="list-group-item">Отражение информации о лайках и комментариях в лентах постов с рабочими ссылками</li>
+              <li class="list-group-item">Возможность поиска в постах по ключевым словам</li>
+              <li class="list-group-item">Система тегов для навигации по постам в виде разноцветных кнопок</li>
+              <li class="list-group-item">Немного красоты: кнопки действий вместо ссылок, картинки к кнопкам, посты в виде карточек, оптимизация для различных устройств</li>
+            </ul>
+          </div>
+          <div class="tab-pane fade" id="v-pills-author" role="tabpanel" aria-labelledby="v-pills-author-tab">
+            {% include "about/author.html" %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %} 

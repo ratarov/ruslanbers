@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Записи сообщества{{ group.title }}{% endblock %}
+{% block content %}
+<div class="row border rounded mb-4 shadow-sm">
+  <div class="col p-4 d-flex flex-column">
+    <h1 class="display-5 fw-bold text-center">{{ group.title }}</h1>
+    <p class="lead mb-4 text-center">{{ group.description|linebreaksbr }}</p>
+  </div>
+</div>
+  {% for post in page_obj %}
+    {% include 'posts/includes/post_card.html' with author_link=True %}
+  {% endfor %}
+  {% include 'posts/includes/paginator.html' %}
+{% endblock %}
